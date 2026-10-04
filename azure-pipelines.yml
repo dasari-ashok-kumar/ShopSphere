@@ -24,6 +24,13 @@ steps:
   - script: npm run build
     displayName: 'Build Angular application'
 
+  - script: |
+      echo "Checking Angular build output..."
+      pwd
+      ls -la
+      find dist -maxdepth 4 -type f -name "index.html"
+    displayName: 'Verify Angular build output'
+
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.SourcesDirectory)/dist'
