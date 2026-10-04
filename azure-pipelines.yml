@@ -30,3 +30,12 @@ steps:
       artifact: 'ShopSphere'
       publishLocation: 'pipeline'
     displayName: 'Publish Angular build artifact'
+
+  - task: AzureStaticWebApp@0
+    displayName: 'Deploy to Azure Static Web Apps'
+    inputs:
+      azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
+      app_location: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
+      api_location: ''
+      output_location: ''
+      skip_app_build: true
