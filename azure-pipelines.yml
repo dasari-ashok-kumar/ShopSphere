@@ -24,3 +24,9 @@ steps:
   - script: npm run build
     displayName: 'Build Angular application'
 
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(Build.SourcesDirectory)/dist'
+      artifact: 'ShopSphere'
+      publishLocation: 'pipeline'
+    displayName: 'Publish Angular build artifact'
