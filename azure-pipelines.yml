@@ -24,8 +24,8 @@ steps:
     displayName: Verify Angular build
 
   - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
-      artifact: ShopSphere
-      publishLocation: pipeline
-    displayName: Publish Angular artifact
+  inputs:
+    targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
+    artifact: ShopSphere
+    publishLocation: pipeline
+  displayName: Publish Angular artifact
