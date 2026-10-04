@@ -31,9 +31,17 @@ steps:
       find dist -maxdepth 4 -type f -name "index.html"
     displayName: 'Verify Angular build output'
 
+    - script: |
+      mkdir -p "$(Build.ArtifactStagingDirectory)/site"
+      cp -R "dist/ShopSphere/browser/." "$(Build.ArtifactStagingDirectory)/site/"
+      echo "Verifying deployment files:"
+      ls -la "$(Build.ArtifactStagingDirectory)/site"
+      test -f "$(Build.ArtifactStagingDirectory)/site/index.html"
+    displayName: 'Prepare deployment files'
+
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.SourcesDirectory)/dist'
+      targetPath: '$(Build.ArtifactStagingDirectory)/site'
       artifact: 'ShopSphere'
       publishLocation: 'pipeline'
     displayName: 'Publish Angular build artifact'
@@ -42,7 +50,7 @@ steps:
     displayName: 'Deploy to Azure Static Web Apps'
     inputs:
       azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
-      app_location: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
+      app_location: '$(Build.ArtifactStagingDirectory)/site'
       api_location: ''
       output_location: ''
       skip_app_build: true
