@@ -1,0 +1,16 @@
+
+<section class="home">
+  <div class="hero">
+    <h2>Welcome to ShopSphere</h2>
+    <p>Explore our latest collection.</p>
+  </div>
+
+  <h2 class="section-title">Featured Products</h2>
+
+  <div class="product-grid">
+    <app-product-card
+      *ngFor="let product of products"
+      [product]="product">
+    </app-product-card>
+  </div>
+</section>

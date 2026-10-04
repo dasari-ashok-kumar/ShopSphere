@@ -1,12 +1,15 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+
+import { Component } from '@angular/core';
+import { HomeComponent } from './features/home/home';
+import { CartService } from './core/services/cart';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [HomeComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('ShopSphere');
+  constructor(public cartService: CartService) {}
 }
