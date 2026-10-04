@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 
 trigger:
   branches:
@@ -10,47 +5,38 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 steps:
   - task: NodeTool@0
     inputs:
       versionSpec: '20.x'
-    displayName: 'Install Node.js'
+    displayName: Install Node.js
 
   - script: npm ci
-    displayName: 'Install dependencies'
+    displayName: Install dependencies
 
   - script: npm run build
-    displayName: 'Build Angular application'
+    displayName: Build Angular application
 
   - script: |
-      echo "Checking Angular build output..."
-      pwd
-      ls -la
-      find dist -maxdepth 4 -type f -name "index.html"
-    displayName: 'Verify Angular build output'
-
-    - script: |
-      mkdir -p "$(Build.ArtifactStagingDirectory)/site"
-      cp -R "dist/ShopSphere/browser/." "$(Build.ArtifactStagingDirectory)/site/"
-      echo "Verifying deployment files:"
-      ls -la "$(Build.ArtifactStagingDirectory)/site"
-      test -f "$(Build.ArtifactStagingDirectory)/site/index.html"
-    displayName: 'Prepare deployment files'
+      echo "Checking Angular output"
+      ls -la dist/ShopSphere/browser
+      test -f dist/ShopSphere/browser/index.html
+    displayName: Verify Angular build
 
   - task: PublishPipelineArtifact@1
     inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)/site'
-      artifact: 'ShopSphere'
-      publishLocation: 'pipeline'
-    displayName: 'Publish Angular build artifact'
+      targetPath: '$(Build.SourcesDirectory)/dist'
+      artifact: ShopSphere
+      publishLocation: pipeline
+    displayName: Publish Angular artifact
 
   - task: AzureStaticWebApp@0
-    displayName: 'Deploy to Azure Static Web Apps'
+    displayName: Deploy to Azure Static Web Apps
     inputs:
       azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
-      app_location: '$(Build.ArtifactStagingDirectory)/site'
+      app_location: 'dist/ShopSphere/browser'
       api_location: ''
       output_location: ''
       skip_app_build: true
