@@ -20,8 +20,6 @@ steps:
     displayName: Build Angular application
 
   - script: |
-      echo "Checking Angular output"
-      ls -la dist/ShopSphere/browser
       test -f dist/ShopSphere/browser/index.html
     displayName: Verify Angular build
 
@@ -31,12 +29,3 @@ steps:
       artifact: ShopSphere
       publishLocation: pipeline
     displayName: Publish Angular artifact
-
-  - task: AzureStaticWebApp@0
-    displayName: Deploy to Azure Static Web Apps
-    inputs:
-      azure_static_web_apps_api_token: $(SWA_DEPLOYMENT_TOKEN)
-      app_location: 'dist/ShopSphere/browser'
-      api_location: ''
-      output_location: ''
-      skip_app_build: true
