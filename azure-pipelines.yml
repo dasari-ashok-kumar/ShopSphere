@@ -1,4 +1,3 @@
-
 trigger:
   branches:
     include:
@@ -23,7 +22,7 @@ steps:
       test -f dist/ShopSphere/browser/index.html
     displayName: Verify Angular build
 
- - task: PublishPipelineArtifact@1
+  - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
       artifact: ShopSphere
