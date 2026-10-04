@@ -22,6 +22,12 @@ steps:
       test -f dist/ShopSphere/browser/index.html
     displayName: Verify Angular build
 
+  - script: |
+    pwd
+    ls -la
+    ls -R dist
+  displayName: 'Check Angular build output'
+  
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
