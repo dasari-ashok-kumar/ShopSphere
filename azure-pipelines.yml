@@ -1,4 +1,4 @@
-
+```yaml
 trigger:
   branches:
     include:
@@ -6,6 +6,12 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+
+variables:
+  imageRepository: 'shopsphere'
+  containerRegistry: 'shopsphereacr.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
 
 steps:
   - task: NodeTool@0
@@ -23,9 +29,17 @@ steps:
       test -f dist/ShopSphere/browser/index.html
     displayName: Verify Angular build
 
-  - script: |
-      docker build -t shopsphere:$(Build.BuildId) .
-    displayName: Build Docker image
+  - task: Docker@2
+    displayName: Build and push Docker image to ACR
+    inputs:
+      command: buildAndPush
+      containerRegistry: 'ShopSphere-ACR-Connection'
+      repository: 'shopsphere'
+      Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+      buildContext: '$(Build.SourcesDirectory)'
+      tags: |
+        $(Build.BuildId)
+        latest
 
   - task: PublishPipelineArtifact@1
     displayName: Publish Angular artifact
@@ -33,3 +47,4 @@ steps:
       targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
       artifact: ShopSphere
       publishLocation: pipeline
+```
