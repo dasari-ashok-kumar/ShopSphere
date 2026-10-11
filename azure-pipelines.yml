@@ -46,4 +46,4 @@ steps:
       targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
       artifact: ShopSphere
       publishLocation: pipeline
-```
+      
