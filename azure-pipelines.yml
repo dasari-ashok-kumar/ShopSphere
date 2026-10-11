@@ -1,3 +1,4 @@
+
 trigger:
   branches:
     include:
@@ -8,9 +9,9 @@ pool:
 
 steps:
   - task: NodeTool@0
+    displayName: Install Node.js
     inputs:
       versionSpec: '20.x'
-    displayName: Install Node.js
 
   - script: npm ci
     displayName: Install dependencies
@@ -22,9 +23,13 @@ steps:
       test -f dist/ShopSphere/browser/index.html
     displayName: Verify Angular build
 
+  - script: |
+      docker build -t shopsphere:$(Build.BuildId) .
+    displayName: Build Docker image
+
   - task: PublishPipelineArtifact@1
+    displayName: Publish Angular artifact
     inputs:
       targetPath: '$(Build.SourcesDirectory)/dist/ShopSphere/browser'
       artifact: ShopSphere
       publishLocation: pipeline
-    displayName: Publish Angular artifact
